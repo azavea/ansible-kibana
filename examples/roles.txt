@@ -1,0 +1,3 @@
+azavea.nginx,0.1.1
+azavea.logstash,0.1.0
+azavea.unzip,0.1.0

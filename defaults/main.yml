@@ -1,0 +1,4 @@
+---
+kibana_dir: /opt
+kibana_host: localhost
+kibana_port: 80

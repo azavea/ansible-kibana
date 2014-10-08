@@ -1,0 +1,37 @@
+---
+- name: Download Kibana
+  get_url: url=http://download.elasticsearch.org/kibana/kibana/kibana-latest.zip
+           dest=/usr/local/src/kibana-latest.zip
+
+- name: Extract and install Kibana
+  unarchive: src=/usr/local/src/kibana-latest.zip dest={{ kibana_dir }}
+             copy=no
+             creates={{ kibana_dir }}/kibana-latest
+
+- name: Ensure that web root exists
+  file: path=/var/www
+        owner=www-data
+        group=www-data
+        state=directory
+
+- name: Symlink latest version of Kibana
+  file: src={{ kibana_dir }}/kibana-latest dest=/var/www/html
+        owner=www-data
+        group=www-data
+        state=link
+
+- name: Configure Kibana
+  template: src=config.js.j2 dest={{ kibana_dir }}/kibana-latest/config.js
+
+- name: Configure Nginx site
+  template: src=kibana.conf.j2
+            dest=/etc/nginx/sites-available/kibana.conf
+  notify:
+    - Restart Nginx
+
+- name: Enable Nginx site
+  file: src=/etc/nginx/sites-available/kibana.conf
+        dest=/etc/nginx/sites-enabled/kibana
+        state=link
+  notify:
+    - Restart Nginx
