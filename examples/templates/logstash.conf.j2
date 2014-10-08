@@ -1,0 +1,10 @@
+input {
+  file { path => [ "/var/log/syslog" ] }
+}
+
+output {
+  stdout { codec => rubydebug }
+  elasticsearch {
+    embedded => true
+  }
+}

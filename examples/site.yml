@@ -1,0 +1,21 @@
+---
+- hosts: all
+
+  vars:
+    kibana_port: 8080
+
+  roles:
+    - { role: "azavea.logstash" }
+    - { role: "azavea.kibana" }
+
+  tasks:
+    - name: Add Logstash user to service group
+      user: name=logstash
+            append=yes
+            groups=adm
+            state=present
+
+    - name: Configure Logstash
+      template: src=templates/logstash.conf.j2 dest=/etc/logstash/conf.d/logstash.conf
+      notify:
+        - Restart Logstash

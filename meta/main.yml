@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Hector Castro
+  description: An Ansible role for installing Kibana.
+  company: Azavea Inc.
+  license: Apache
+  min_ansible_version: 1.2
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  categories:
+  - system
+  - monitoring
+dependencies:
+  - { role: "azavea.unzip" }
+  - { role: "azavea.nginx", nginx_delete_default_site: True }
