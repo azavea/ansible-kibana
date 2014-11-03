@@ -6,7 +6,7 @@
 
   roles:
     - { role: "azavea.logstash" }
-    - { role: "azavea.kibana" }
+    - { role: "azavea.kibana", kibana_port: 8081 }
 
   tasks:
     - name: Add Logstash user to service group
