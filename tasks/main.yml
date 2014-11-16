@@ -1,37 +1,38 @@
 ---
+- name: Create service account for Kibana
+  user: name=kibana
+        system=yes
+        home=/var/lib/kibana
+        shell=/bin/false
+        state=present
+
 - name: Download Kibana
-  get_url: url=http://download.elasticsearch.org/kibana/kibana/kibana-latest.zip
-           dest=/usr/local/src/kibana-latest.zip
+  get_url: url=https://download.elasticsearch.org/kibana/kibana/kibana-{{ kibana_version }}.zip
+           dest=/usr/local/src/kibana-{{ kibana_version }}.zip
 
 - name: Extract and install Kibana
-  unarchive: src=/usr/local/src/kibana-latest.zip dest={{ kibana_dir }}
+  unarchive: src=/usr/local/src/kibana-{{ kibana_version }}.zip
+             dest={{ kibana_dir }}
              copy=no
-             creates={{ kibana_dir }}/kibana-latest
-
-- name: Ensure that web root exists
-  file: path=/var/www
-        owner=www-data
-        group=www-data
-        state=directory
-
-- name: Symlink latest version of Kibana
-  file: src={{ kibana_dir }}/kibana-latest dest=/var/www/html
-        owner=www-data
-        group=www-data
-        state=link
+             creates={{ kibana_dir }}/kibana-{{ kibana_version }}
 
 - name: Configure Kibana
-  template: src=config.js.j2 dest={{ kibana_dir }}/kibana-latest/config.js
-
-- name: Configure Nginx site
-  template: src=kibana.conf.j2
-            dest=/etc/nginx/sites-available/kibana.conf
+  template: src=kibana.yml.j2
+            dest={{ kibana_dir }}/kibana-{{ kibana_version }}/config/kibana.yml
   notify:
-    - Restart Nginx
+    - Restart Kibana
 
-- name: Enable Nginx site
-  file: src=/etc/nginx/sites-available/kibana.conf
-        dest=/etc/nginx/sites-enabled/kibana
-        state=link
+- name: Configure Kibana service definition
+  template: src=kibana.conf.j2 dest=/etc/init/kibana.conf
   notify:
-    - Restart Nginx
+    - Restart Kibana
+
+- name: Touch log file if it does not exist
+  command: touch {{ kibana_log }}
+           creates={{ kibana_log }}
+
+- name: Set log file permissions
+  file: path={{ kibana_log }} owner=kibana group=kibana mode=0644
+
+- name: Configure Kibana log rotation
+  template: src=logrotate_kibana.j2 dest=/etc/logrotate.d/kibana

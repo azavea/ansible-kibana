@@ -4,7 +4,11 @@ input {
 
 output {
   stdout { codec => rubydebug }
+
   elasticsearch {
-    embedded => true
+    embedded => false
+    host => "localhost"
+    protocol => "http"
+    cluster => "{{ elasticsearch_cluster_name }}"
   }
 }
