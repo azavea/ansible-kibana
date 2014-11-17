@@ -2,11 +2,16 @@
 - hosts: all
 
   vars:
-    kibana_port: 8080
+    elasticsearch_cluster_name: "logstash"
+
+  pre_tasks:
+    - name: Update APT cache
+      apt: update_cache=yes
 
   roles:
+    - { role: "azavea.elasticsearch" }
     - { role: "azavea.logstash" }
-    - { role: "azavea.kibana", kibana_port: 8081 }
+    - { role: "azavea.kibana" }
 
   tasks:
     - name: Add Logstash user to service group
