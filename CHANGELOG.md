@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Change default Kibana version to 4 beta 3.
+
 ## 0.2.0
 
 - Add support for Kibana 4.
