@@ -4,7 +4,7 @@ An Ansible role for installing [Kibana](http://www.elasticsearch.org/overview/ki
 
 ## Role Variables
 
-- `kibana_version` - Kibana version to install (default: `4.0.0-BETA2`)
+- `kibana_version` - Kibana version to install (default: `4.0.0-beta3`)
 - `kibana_dir` - Directory to extract the Kibana archive (default: `/opt`)
 - `kibana_host` - Kibana address to bind to (default: `0.0.0.0`)
 - `kibana_port` - Kibana port (default: `5601`)

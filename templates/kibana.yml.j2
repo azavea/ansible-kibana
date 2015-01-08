@@ -7,12 +7,16 @@ host: "{{ kibana_host }}"
 # The Elasticsearch instance to use for all your queries
 elasticsearch: "{{ kibana_elasticsearch }}"
 
+# preserve_elasticsearch_host true will send the hostname specified in `elasticsearch`. If you set it to false,
+# then the host you use to connect to *this* Kibana instance will be sent.
+elasticsearch_preserve_host: true
+
 # Kibana uses an index in Elasticsearch to store saved searches, visualizations
 # and dashboards. It will create an new index if it doesn't already exist.
-kibanaIndex: "{{ kibana_index }}"
+kibana_index: "{{ kibana_index }}"
 
 # The default application to load.
-defaultAppId: "discover"
+default_app_id: "discover"
 
 # Time in seconds to wait for responses from the back end or elasticsearch.
 # Note this should always be higher than "shard_timeout".
@@ -24,7 +28,7 @@ request_timeout: 60
 # Set to 0 to disable (not recommended).
 shard_timeout: 30000
 
-# Have a complete disregard for the validity of the SSL certificate
+# Verify validity of SSL certificates
 verifySSL: true
 
 # Plugins that are included in the build, and no longer found in the plugins/ folder
