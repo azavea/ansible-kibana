@@ -1,17 +1,14 @@
 ---
 - hosts: all
 
-  vars:
-    elasticsearch_cluster_name: "logstash"
-
   pre_tasks:
     - name: Update APT cache
       apt: update_cache=yes
 
   roles:
-    - { role: "azavea.elasticsearch" }
+    - { role: "azavea.elasticsearch", elasticsearch_version: "1.4.4" }
     - { role: "azavea.logstash" }
-    - { role: "azavea.kibana" }
+    - { role: "azavea.kibana", elasticsearch_cluster_name: "logstash" }
 
   tasks:
     - name: Add Logstash user to service group

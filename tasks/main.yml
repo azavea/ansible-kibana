@@ -7,18 +7,18 @@
         state=present
 
 - name: Download Kibana
-  get_url: url=https://download.elasticsearch.org/kibana/kibana/kibana-{{ kibana_version }}.zip
-           dest=/usr/local/src/kibana-{{ kibana_version }}.zip
+  get_url: url=https://download.elasticsearch.org/kibana/kibana/kibana-{{ kibana_version }}-{{ kibana_os }}-{{ kibana_arch }}.zip
+           dest=/usr/local/src/kibana-{{ kibana_version }}-{{ kibana_os }}-{{ kibana_arch }}.zip
 
 - name: Extract and install Kibana
-  unarchive: src=/usr/local/src/kibana-{{ kibana_version }}.zip
+  unarchive: src=/usr/local/src/kibana-{{ kibana_version }}-{{ kibana_os }}-{{ kibana_arch }}.zip
              dest={{ kibana_dir }}
              copy=no
-             creates={{ kibana_dir }}/kibana-{{ kibana_version }}
+             creates={{ kibana_dir }}/kibana-{{ kibana_version }}-{{ kibana_os }}-{{ kibana_arch }}
 
 - name: Configure Kibana
   template: src=kibana.yml.j2
-            dest={{ kibana_dir }}/kibana-{{ kibana_version }}/config/kibana.yml
+            dest={{ kibana_dir }}/kibana-{{ kibana_version }}-{{ kibana_os }}-{{ kibana_arch }}/config/kibana.yml
   notify:
     - Restart Kibana
 

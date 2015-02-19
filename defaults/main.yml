@@ -1,5 +1,7 @@
 ---
-kibana_version: "4.0.0-beta3"
+kibana_version: "4.0.0"
+kibana_os: "linux"
+kibana_arch: "x64"
 kibana_dir: "/opt"
 kibana_host: "0.0.0.0"
 kibana_port: "5601"
