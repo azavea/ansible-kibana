@@ -1,3 +1,7 @@
+## 0.3.1
+
+- Change default Kibana version to 4.0.1.
+
 ## 0.3.0
 
 - Change default Kibana version to 4 (general release).
