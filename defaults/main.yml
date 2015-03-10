@@ -1,5 +1,5 @@
 ---
-kibana_version: "4.0.0"
+kibana_version: "4.0.1"
 kibana_os: "linux"
 kibana_arch: "x64"
 kibana_dir: "/opt"
