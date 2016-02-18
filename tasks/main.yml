@@ -1,38 +1,21 @@
 ---
-- name: Create service account for Kibana
-  user: name=kibana
-        system=yes
-        home=/var/lib/kibana
-        shell=/bin/false
-        state=present
+- name: Configure Elastic APT key
+  apt_key: url=https://packages.elastic.co/GPG-KEY-elasticsearch
+           state=present
 
-- name: Download Kibana
-  get_url: url=https://download.elasticsearch.org/kibana/kibana/kibana-{{ kibana_version }}-{{ kibana_os }}-{{ kibana_arch }}.zip
-           dest=/usr/local/src/kibana-{{ kibana_version }}-{{ kibana_os }}-{{ kibana_arch }}.zip
+- name: Configure the Elastic APT repositories
+  apt_repository: repo="deb http://packages.elastic.co/kibana/{{ kibana_short_version }}/debian stable main"
+                  state=present
 
-- name: Extract and install Kibana
-  unarchive: src=/usr/local/src/kibana-{{ kibana_version }}-{{ kibana_os }}-{{ kibana_arch }}.zip
-             dest={{ kibana_dir }}
-             copy=no
-             creates={{ kibana_dir }}/kibana-{{ kibana_version }}-{{ kibana_os }}-{{ kibana_arch }}
+- name: Install Kibana
+  apt: pkg="kibana={{ kibana_version }}"
+       state=present
+
+- name: Enable Kibana service
+  service: name=kibana enabled=yes
 
 - name: Configure Kibana
   template: src=kibana.yml.j2
-            dest={{ kibana_dir }}/kibana-{{ kibana_version }}-{{ kibana_os }}-{{ kibana_arch }}/config/kibana.yml
+            dest=/opt/kibana/config/kibana.yml
   notify:
     - Restart Kibana
-
-- name: Configure Kibana service definition
-  template: src=kibana.conf.j2 dest=/etc/init/kibana.conf
-  notify:
-    - Restart Kibana
-
-- name: Touch log file if it does not exist
-  command: touch {{ kibana_log }}
-           creates={{ kibana_log }}
-
-- name: Set log file permissions
-  file: path={{ kibana_log }} owner=kibana group=kibana mode=0644
-
-- name: Configure Kibana log rotation
-  template: src=logrotate_kibana.j2 dest=/etc/logrotate.d/kibana

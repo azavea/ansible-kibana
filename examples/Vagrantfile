@@ -6,10 +6,9 @@ VAGRANTFILE_API_VERSION = "2"
 # Ensure role dependencies are in place
 if [ "up", "provision" ].include?(ARGV.first) && File.directory?("roles") &&
   !(File.directory?("roles/azavea.logstash") || File.symlink?("roles/azavea.logstash")) ||
-  !(File.directory?("roles/azavea.java") || File.symlink?("roles/azavea.java")) ||
   !(File.directory?("roles/azavea.elasticsearch") || File.symlink?("roles/azavea.elasticsearch")) ||
-  !(File.directory?("roles/azavea.unzip") || File.symlink?("roles/azavea.unzip"))
-  system("ansible-galaxy install --force -r roles.txt -p roles")
+  !(File.directory?("roles/azavea.java") || File.symlink?("roles/azavea.java"))
+  system("ansible-galaxy install --force -r roles.yml -p roles")
 end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|

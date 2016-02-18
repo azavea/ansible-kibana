@@ -1,13 +1,7 @@
 ---
-kibana_version: "4.0.1"
-kibana_os: "linux"
-kibana_arch: "x64"
-kibana_dir: "/opt"
-kibana_host: "0.0.0.0"
+kibana_version: "4.4.1"
+kibana_short_version: "4.4"
+kibana_bind_host: "127.0.0.1"
 kibana_port: "5601"
-kibana_elasticsearch: "http://localhost:9200"
+kibana_elasticsearch_endpoint: "http://localhost:9200"
 kibana_index: ".kibana"
-
-kibana_log: /var/log/kibana.log
-kibana_log_rotate_count: 5
-kibana_log_rotate_interval: daily
